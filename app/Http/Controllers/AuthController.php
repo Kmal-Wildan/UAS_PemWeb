@@ -2,39 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function showLogin()
     {
+        if (auth()->check()) {
+            return redirect()->route(
+                auth()->user()->isAdmin() ? 'dashboard.admin' : 'dashboard.user'
+            );
+        }
+
         return view('auth.login');
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
 
-        // Demo login untuk Progres I (ganti dengan Auth::attempt pada Progres II)
-        $role = str_contains($request->email, 'admin') ? 'admin' : 'user';
-        $name = $role === 'admin' ? 'Administrator' : 'User Biasa';
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
 
-        session([
-            'role' => $role,
-            'user_name' => $name,
-            'email' => $request->email,
-        ]);
+            $user = auth()->user();
 
-        return redirect()->route($role === 'admin' ? 'dashboard.admin' : 'dashboard.user')
-            ->with('success', 'Login berhasil! Selamat datang, ' . $name);
+            return redirect()->route($user->isAdmin() ? 'dashboard.admin' : 'dashboard.user')
+                ->with('success', 'Login berhasil! Selamat datang, ' . $user->name);
+        }
+
+        return back()
+            ->withInput($request->only('email'))
+            ->with('error', 'Email atau password salah.');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->flush();
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', 'Anda telah keluar.');
     }

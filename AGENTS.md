@@ -4,30 +4,24 @@
 
 ### Repository state
 
-Progres I (View) telah ditambahkan pada branch `cursor/phase-1-637a`. Berisi Blade views, CSS/JS assets, routes demo, dan controller stubs.
+- **Progres I** (`cursor/phase-1-637a`): Blade views, layout, CSS/JS
+- **Progres II** (`cursor/phase-2-637a`): Migration, Model, Controller, Middleware, Seeder, Export PDF/Excel
 
-**Catatan:** Lingkungan cloud saat ini tidak memiliki PHP/Composer. File view dan controller stubs siap disalin ke project Laravel lokal.
-
-### Struktur Progres I
-
-- `resources/views/` — Semua Blade templates
-- `public/css/app.css` — Custom stylesheet
-- `public/js/app.js` — jQuery interactions (sidebar, delete modal, Ajax setup)
-- `routes/web.php` — Route definitions untuk demo view
-- `app/Http/Controllers/` — Controller stubs (Auth, Dashboard, Data, Laporan)
-
-### Setup lokal (setelah PHP tersedia)
+### Setup lokal
 
 ```bash
-composer create-project laravel/laravel .
-# Salin file dari branch cursor/phase-1-637a
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
 php artisan serve
 ```
 
 ### Demo login
 
-- Admin: email mengandung "admin" → dashboard admin
-- User: email lainnya → dashboard user
+- Admin: `admin@example.com` / `password`
+- User: `user@example.com` / `password`
 
 ### Available system tools
 
@@ -35,4 +29,11 @@ php artisan serve
 - **npm**: v10
 - **Python**: 3.12
 - **Git**: 2.43
-- **PHP/Composer**: Tidak tersedia di cloud VM (install lokal)
+- **PHP/Composer**: Install lokal (tidak tersedia di cloud VM)
+
+### Middleware
+
+- `auth` — wajib login
+- `role:admin` — hanya admin
+- `role:user` — hanya user
+- `role:admin,user` — admin dan user (read access)

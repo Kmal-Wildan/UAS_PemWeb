@@ -1,6 +1,5 @@
 @php
-    $userRole = auth()->user()->role ?? session('role', 'user');
-    $isAdmin = $userRole === 'admin';
+    $isAdmin = auth()->user()->isAdmin();
     $currentRoute = request()->route()?->getName() ?? '';
 @endphp
 
@@ -14,7 +13,6 @@
         <p class="sidebar-label">Menu Utama</p>
         <ul class="nav flex-column">
             @if($isAdmin)
-                {{-- Menu Admin --}}
                 <li class="nav-item">
                     <a href="{{ route('dashboard.admin') }}"
                        class="nav-link {{ str_starts_with($currentRoute, 'dashboard.admin') ? 'active' : '' }}">
@@ -23,10 +21,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('data.index') }}"
-                       class="nav-link {{ str_starts_with($currentRoute, 'data.') ? 'active' : '' }}">
-                        <i class="bi bi-database"></i>
-                        <span>Data Utama</span>
+                    <a href="{{ route('barang.index') }}"
+                       class="nav-link {{ str_starts_with($currentRoute, 'barang.') ? 'active' : '' }}">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Data Barang</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -37,7 +35,6 @@
                     </a>
                 </li>
             @else
-                {{-- Menu User (read-only) --}}
                 <li class="nav-item">
                     <a href="{{ route('dashboard.user') }}"
                        class="nav-link {{ str_starts_with($currentRoute, 'dashboard.user') ? 'active' : '' }}">
@@ -46,10 +43,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('data.index') }}"
-                       class="nav-link {{ str_starts_with($currentRoute, 'data.') ? 'active' : '' }}">
+                    <a href="{{ route('barang.index') }}"
+                       class="nav-link {{ str_starts_with($currentRoute, 'barang.') ? 'active' : '' }}">
                         <i class="bi bi-eye"></i>
-                        <span>Lihat Data</span>
+                        <span>Lihat Barang</span>
                     </a>
                 </li>
                 <li class="nav-item">
