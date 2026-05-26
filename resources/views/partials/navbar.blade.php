@@ -1,7 +1,6 @@
 @php
-    $userName = auth()->user()->name ?? session('user_name', 'Pengguna');
-    $userRole = auth()->user()->role ?? session('role', 'user');
-    $isAdmin = $userRole === 'admin';
+    $user = auth()->user();
+    $isAdmin = $user->isAdmin();
 @endphp
 
 <header class="app-navbar">
@@ -16,21 +15,16 @@
     </div>
 
     <div class="d-flex align-items-center gap-3">
-        <div class="navbar-search d-none d-md-block">
-            <i class="bi bi-search"></i>
-            <input type="text" class="form-control form-control-sm" placeholder="Cari menu..." id="globalSearch" disabled>
-        </div>
-
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle user-dropdown" type="button" data-bs-toggle="dropdown">
-                <span class="user-avatar">{{ strtoupper(substr($userName, 0, 1)) }}</span>
-                <span class="d-none d-sm-inline">{{ $userName }}</span>
+                <span class="user-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                <span class="d-none d-sm-inline">{{ $user->name }}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow">
                 <li>
                     <span class="dropdown-item-text text-muted small">
                         <i class="bi bi-person-badge me-1"></i>
-                        {{ $isAdmin ? 'Admin' : 'User' }}
+                        {{ $isAdmin ? 'Admin' : 'User' }} — {{ $user->email }}
                     </span>
                 </li>
                 <li><hr class="dropdown-divider"></li>

@@ -13,6 +13,12 @@
     </div>
 
     <div class="auth-card-body">
+        @if(session('error'))
+            <div class="alert alert-danger py-2">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @if($errors->any())
             <div class="alert alert-danger py-2">
                 <ul class="mb-0 small">
@@ -77,7 +83,7 @@
         </form>
 
         <div class="auth-demo mt-4">
-            <p class="text-muted small mb-2 text-center">Demo akun (Progres I):</p>
+            <p class="text-muted small mb-2 text-center">Akun demo (password: <code>password</code>):</p>
             <div class="row g-2">
                 <div class="col-6">
                     <div class="demo-account">
