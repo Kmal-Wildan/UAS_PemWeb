@@ -7,8 +7,8 @@ Dokumentasi lengkap untuk presentasi tugas kuliah aplikasi manajemen barang Lara
 ## Cara Menjalankan Project
 
 ```bash
-# 1. Clone & masuk ke branch demo
-git checkout phase-3-demo-ready
+# 1. Clone main
+git clone https://github.com/Kmal-Wildan/UAS_PEMWEB/
 
 # 2. Install dependencies
 composer install
