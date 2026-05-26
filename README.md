@@ -43,8 +43,8 @@ Buka: http://127.0.0.1:8000
 
 | Branch | Tahap |
 |--------|-------|
-| `cursor/phase-1` | View (Blade) |
-| `cursor/phase-2` | Model & Controller |
+| `phase-1` | View (Blade) |
+| `phase-2` | Model & Controller |
 | `phase-3-demo-ready` | Demo-ready + dokumentasi presentasi |
 
 ## Tech Stack
