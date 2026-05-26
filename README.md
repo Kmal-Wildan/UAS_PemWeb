@@ -85,7 +85,7 @@ php artisan serve
 
 ### Branch
 
-Progres I tersedia di branch: `cursor/phase-1-637a`
+Progres I tersedia di branch: `phase-1`
 
 ### Tech Stack
 
