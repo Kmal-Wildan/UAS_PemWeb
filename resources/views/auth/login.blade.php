@@ -41,7 +41,7 @@
                            id="email"
                            name="email"
                            value="{{ old('email') }}"
-                           placeholder="admin@example.com"
+                           placeholder="admin@gmail.com"
                            required
                            autofocus>
                 </div>
@@ -83,18 +83,18 @@
         </form>
 
         <div class="auth-demo mt-4">
-            <p class="text-muted small mb-2 text-center">Akun demo (password: <code>password</code>):</p>
+            <p class="text-muted small mb-2 text-center">Akun demo (password: <code>password123</code>):</p>
             <div class="row g-2">
                 <div class="col-6">
                     <div class="demo-account">
                         <strong>Admin</strong>
-                        <small>admin@example.com</small>
+                        <small>admin@gmail.com</small>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="demo-account">
                         <strong>User</strong>
-                        <small>user@example.com</small>
+                        <small>user@gmail.com</small>
                     </div>
                 </div>
             </div>

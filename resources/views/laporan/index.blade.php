@@ -20,6 +20,15 @@
         </div>
     </div>
     <div class="col-md-3">
+        <div class="stat-card stat-info">
+            <div class="stat-icon"><i class="bi bi-tags"></i></div>
+            <div class="stat-info">
+                <p class="stat-label">Total Kategori</p>
+                <h3 class="stat-value">{{ number_format($stats['total_kategori']) }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
         <div class="stat-card stat-success">
             <div class="stat-icon"><i class="bi bi-stack"></i></div>
             <div class="stat-info">
@@ -32,17 +41,8 @@
         <div class="stat-card stat-warning">
             <div class="stat-icon"><i class="bi bi-currency-dollar"></i></div>
             <div class="stat-info">
-                <p class="stat-label">Total Nilai</p>
+                <p class="stat-label">Total Nilai Barang</p>
                 <h3 class="stat-value">Rp {{ number_format($stats['total_nilai'], 0, ',', '.') }}</h3>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="stat-card stat-info">
-            <div class="stat-icon"><i class="bi bi-tags"></i></div>
-            <div class="stat-info">
-                <p class="stat-label">Kategori</p>
-                <h3 class="stat-value">{{ number_format($stats['total_kategori']) }}</h3>
             </div>
         </div>
     </div>
@@ -84,18 +84,20 @@
 
 <div class="card shadow-sm border-0">
     <div class="card-header bg-white border-0 py-3">
-        <form method="GET" action="{{ route('laporan.index') }}" class="row align-items-center g-3">
-            <div class="col-md-4">
+        <form method="GET" action="{{ route('laporan.index') }}" class="row align-items-end g-3">
+            <div class="col-md-3">
+                <label class="form-label small text-muted">Pencarian</label>
                 <div class="search-box">
                     <i class="bi bi-search"></i>
                     <input type="text"
                            class="form-control"
                            name="q"
                            value="{{ $keyword }}"
-                           placeholder="Cari nama, kode, kategori...">
+                           placeholder="Nama, kode, kategori...">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <label class="form-label small text-muted">Kategori</label>
                 <select class="form-select" name="kategori">
                     <option value="">Semua Kategori</option>
                     @foreach($kategoriList as $kat)
@@ -103,15 +105,24 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-5 text-md-end">
-                <button type="submit" class="btn btn-primary me-2">
+            <div class="col-md-2">
+                <label class="form-label small text-muted">Tanggal Dari</label>
+                <input type="date" class="form-control" name="tanggal_dari" value="{{ $tanggal_dari }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small text-muted">Tanggal Sampai</label>
+                <input type="date" class="form-control" name="tanggal_sampai" value="{{ $tanggal_sampai }}">
+            </div>
+            <div class="col-md-3 text-md-end">
+                <button type="submit" class="btn btn-primary me-1">
                     <i class="bi bi-funnel me-1"></i>Filter
                 </button>
+                <a href="{{ route('laporan.index') }}" class="btn btn-light me-1">Reset</a>
                 <a href="{{ route('laporan.export.pdf', request()->query()) }}" class="btn btn-danger">
-                    <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
+                    <i class="bi bi-file-earmark-pdf"></i>
                 </a>
                 <a href="{{ route('laporan.export.excel', request()->query()) }}" class="btn btn-success">
-                    <i class="bi bi-file-earmark-excel me-1"></i>Export Excel
+                    <i class="bi bi-file-earmark-excel"></i>
                 </a>
             </div>
         </form>
@@ -129,6 +140,7 @@
                         <th>Stok</th>
                         <th>Harga</th>
                         <th>Total Nilai</th>
+                        <th>Tanggal</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,11 +152,12 @@
                             <td><span class="badge bg-light text-dark">{{ $barang->kategori }}</span></td>
                             <td>{{ number_format($barang->stok) }}</td>
                             <td>{{ $barang->harga_formatted }}</td>
-                            <td>Rp {{ number_format($barang->stok * $barang->harga, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($barang->total_nilai, 0, ',', '.') }}</td>
+                            <td>{{ $barang->created_at->format('d/m/Y') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-muted py-4">Tidak ada data laporan.</td>
+                            <td colspan="8" class="text-center text-muted py-4">Tidak ada data laporan.</td>
                         </tr>
                     @endforelse
                 </tbody>

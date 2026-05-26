@@ -5,7 +5,7 @@
                 &copy; {{ date('Y') }} {{ config('app.name', 'UAS PEMWEB') }}. All rights reserved.
             </p>
             <p class="mb-0 text-muted small">
-                Progres II — Laravel Model & Controller
+                Progres III — Demo Ready
             </p>
         </div>
     </div>

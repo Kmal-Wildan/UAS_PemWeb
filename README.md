@@ -1,104 +1,52 @@
-# UAS PEMWEB
+# UAS PEMWEB — Sistem Manajemen Barang
 
-Aplikasi website Laravel dengan dua aktor: **Admin** (CRUD penuh) dan **User** (read-only).
+Aplikasi Laravel dengan dua role **Admin** (CRUD penuh) dan **User** (read-only).
 
-## Progres
+**Branch demo-ready:** `phase-3-demo-ready`
 
-| Progres | Branch | Isi |
-|---------|--------|-----|
-| I — View | `cursor/phase-1-637a` | Blade templates, layout, UI |
-| II — Model & Controller | `cursor/phase-2-637a` | Migration, Model, Controller, Middleware, Export |
+Panduan presentasi lengkap: **[DEMO.md](DEMO.md)**
 
-## Instalasi
+## Quick Start
 
 ```bash
-# Clone & checkout branch Progres II
-git checkout cursor/phase-2-637a
-
-# Install Laravel + dependencies (jika belum ada project penuh)
+git checkout phase-3-demo-ready
 composer install
-
-# Environment
 cp .env.example .env
 php artisan key:generate
-
-# Database (SQLite default)
 touch database/database.sqlite
-php artisan migrate --seed
-
-# Jalankan server
+php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-Buka http://localhost:8000
+Buka: http://127.0.0.1:8000
 
 ## Akun Demo
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@example.com | password |
-| User | user@example.com | password |
+| Admin | admin@gmail.com | password123 |
+| User | user@gmail.com | password123 |
 
-## Hak Akses
+## Fitur
 
-| Fitur | Admin | User |
-|-------|-------|------|
-| Login / Logout | ✅ | ✅ |
-| Dashboard | ✅ Admin | ✅ User |
-| Lihat Barang (index, detail) | ✅ | ✅ |
-| Tambah / Edit / Hapus Barang | ✅ | ❌ |
-| Lihat Laporan | ✅ | ✅ |
-| Export PDF / Excel | ✅ | ✅ |
+- Login / Logout dengan Laravel Auth
+- Role Admin & User (middleware)
+- CRUD Barang (Admin only)
+- Dashboard statistik (barang, kategori, stok, nilai)
+- Pencarian Ajax
+- Laporan + filter kategori & tanggal
+- Export PDF & Excel
+- Validasi form + flash messages
+- 18 data dummy siap demo
 
-## Struktur Backend (Progres II)
+## Progres
 
-```
-app/
-├── Exports/BarangExport.php       # Export Excel (Maatwebsite)
-├── Http/
-│   ├── Controllers/
-│   │   ├── AuthController.php     # Login/logout (Auth facade)
-│   │   ├── BarangController.php   # CRUD + search Ajax
-│   │   ├── DashboardController.php
-│   │   └── LaporanController.php  # Laporan + export PDF/Excel
-│   ├── Middleware/RoleMiddleware.php  # Pembatasan role admin/user
-│   └── Requests/
-│       ├── LoginRequest.php
-│       ├── StoreBarangRequest.php
-│       └── UpdateBarangRequest.php
-└── Models/
-    ├── User.php                   # Model user + role
-    └── Barang.php                 # Model barang + scope search
-
-database/
-├── migrations/
-│   ├── ..._create_users_table.php
-│   └── ..._create_barangs_table.php
-└── seeders/
-    ├── DatabaseSeeder.php
-    ├── UserSeeder.php
-    └── BarangSeeder.php
-```
-
-## Entitas Barang
-
-| Field | Tipe |
-|-------|------|
-| id | bigint |
-| kode_barang | string (unique) |
-| nama_barang | string |
-| kategori | string |
-| stok | unsigned integer |
-| harga | decimal(15,2) |
-| created_at / updated_at | timestamp |
-
-## Dependencies Export
-
-- **PDF**: `barryvdh/laravel-dompdf`
-- **Excel**: `maatwebsite/excel`
+| Branch | Tahap |
+|--------|-------|
+| `cursor/phase-1-637a` | View (Blade) |
+| `cursor/phase-2-637a` | Model & Controller |
+| `phase-3-demo-ready` | Demo-ready + dokumentasi presentasi |
 
 ## Tech Stack
 
-- Laravel 11, PHP 8.2+
-- Bootstrap 5, jQuery Ajax
-- SQLite (default) / MySQL
+Laravel 11 · Bootstrap 5 · jQuery · DomPDF · Maatwebsite Excel · SQLite/MySQL
