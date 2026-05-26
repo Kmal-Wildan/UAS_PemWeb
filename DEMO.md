@@ -4,23 +4,55 @@ Dokumentasi lengkap untuk presentasi tugas kuliah aplikasi manajemen barang Lara
 
 ---
 
+## Persyaratan — PHP 8.4
+
+Project ini diuji dengan **PHP 8.4**. Gunakan versi ini untuk menghindari error saat `composer install`.
+
+| Item | Detail |
+|------|--------|
+| PHP | **8.4.x** (disarankan) |
+| Tidak didukung | PHP 8.5+ (dependency Excel belum kompatibel) |
+| Composer | 2.x |
+| Extension wajib | `zip`, `mbstring`, `openssl`, `pdo_sqlite`, `fileinfo` |
+
+### Verifikasi sebelum install
+
+```bash
+php -v          # harus 8.4.x
+php -m          # pastikan "zip" ada di daftar
+composer -V
+```
+
+### Windows — ganti ke PHP 8.4
+
+Jika `php -v` menampilkan 8.5:
+
+1. **Laragon:** Menu → PHP → **8.4** → restart terminal
+2. **Manual:** Download PHP 8.4, aktifkan `extension=zip` di `php.ini`, update PATH
+
+---
+
 ## Cara Menjalankan Project
 
 ```bash
 # 1. Clone & masuk ke branch demo
 git checkout phase-3-demo-ready
 
-# 2. Install dependencies
+# 2. Pastikan PHP 8.4 aktif
+php -v
+
+# 3. Install dependencies
 composer install
 
-# 3. Setup environment
-cp .env.example .env
+# 4. Setup environment
+cp .env.example .env          # Windows: copy .env.example .env
 php artisan key:generate
 
-# 4. Setting database (pilih salah satu)
+# 5. Setting database (pilih salah satu)
 
 # Opsi A — SQLite (paling mudah untuk demo)
 touch database/database.sqlite
+# Windows: New-Item database\database.sqlite -ItemType File -Force
 # Pastikan di .env:
 # DB_CONNECTION=sqlite
 # DB_DATABASE=database/database.sqlite
@@ -33,10 +65,10 @@ touch database/database.sqlite
 # DB_USERNAME=root
 # DB_PASSWORD=
 
-# 5. Migrasi & data dummy
+# 6. Migrasi & data dummy
 php artisan migrate:fresh --seed
 
-# 6. Jalankan server
+# 7. Jalankan server
 php artisan serve
 ```
 
@@ -70,6 +102,8 @@ Tanggal `created_at` dispread 2–80 hari terakhir agar **filter tanggal** pada 
 
 Gunakan checklist ini sebelum presentasi:
 
+- [ ] PHP 8.4 terpasang (`php -v` → 8.4.x)
+- [ ] Extension `zip` aktif (`php -m | findstr zip` di Windows)
 - [ ] `composer install` berhasil tanpa error
 - [ ] File `.env` sudah dibuat dan `APP_KEY` terisi
 - [ ] Database sudah dimigrasi (`php artisan migrate:fresh --seed`)
@@ -95,7 +129,7 @@ Gunakan checklist ini sebelum presentasi:
 ### Bagian 1 — Pembukaan (2 menit)
 
 1. Jelaskan judul: **Sistem Manajemen Barang dengan Role Admin & User**
-2. Sebutkan tech stack: Laravel 11, Bootstrap 5, jQuery Ajax, SQLite/MySQL
+2. Sebutkan tech stack: Laravel 11, PHP 8.4, Bootstrap 5, jQuery Ajax, SQLite/MySQL
 3. Tunjukkan halaman login
 
 ### Bagian 2 — Demo Admin (8–10 menit)
@@ -175,11 +209,12 @@ Gunakan checklist ini sebelum presentasi:
 
 ## Tips Presentasi
 
-1. Jalankan `php artisan migrate:fresh --seed` **sebelum demo** agar data fresh
-2. Siapkan 1 barang baru untuk demo tambah (contoh: BRG-019)
-3. Untuk demo filter tanggal: gunakan rentang 30–60 hari terakhir
-4. Buka PDF/Excel yang terunduh untuk bukti export berfungsi
-5. Bookmark URL penting: `/login`, `/dashboard/admin`, `/barang`, `/laporan`
+1. Pastikan `php -v` menampilkan **8.4.x** sebelum demo
+2. Jalankan `php artisan migrate:fresh --seed` **sebelum demo** agar data fresh
+3. Siapkan 1 barang baru untuk demo tambah (contoh: BRG-019)
+4. Untuk demo filter tanggal: gunakan rentang 30–60 hari terakhir
+5. Buka PDF/Excel yang terunduh untuk bukti export berfungsi
+6. Bookmark URL penting: `/login`, `/dashboard/admin`, `/barang`, `/laporan`
 
 ---
 
@@ -187,9 +222,12 @@ Gunakan checklist ini sebelum presentasi:
 
 | Masalah | Solusi |
 |---------|--------|
+| `composer install` gagal — PHP 8.5 | Ganti ke **PHP 8.4** (Laragon → PHP → 8.4) |
+| `ext-zip` missing | Aktifkan `extension=zip` di `php.ini`, restart terminal |
 | `No application encryption key` | `php artisan key:generate` |
 | Database error | Cek `.env`, pastikan SQLite file ada atau MySQL running |
-| Export PDF error | `composer require barryvdh/laravel-dompdf` |
-| Export Excel error | `composer require maatwebsite/excel` |
+| Export PDF error | Pastikan extension `gd` aktif; `composer require barryvdh/laravel-dompdf` |
+| Export Excel error | Pastikan PHP 8.4 + extension `zip` aktif |
 | 403 on all pages | Pastikan login dengan akun yang benar |
 | Halaman kosong | `php artisan config:clear && php artisan cache:clear` |
+| Windows buka IDE saat composer | PHP belum terpasang benar — cek `php -v` di terminal |
