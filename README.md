@@ -6,14 +6,14 @@ Aplikasi website Laravel dengan dua aktor: **Admin** (CRUD penuh) dan **User** (
 
 | Progres | Branch | Isi |
 |---------|--------|-----|
-| I — View | `cursor/phase-1-637a` | Blade templates, layout, UI |
-| II — Model & Controller | `cursor/phase-2-637a` | Migration, Model, Controller, Middleware, Export |
+| I — View | `cursor/phase-1` | Blade templates, layout, UI |
+| II — Model & Controller | `phase-2` | Migration, Model, Controller, Middleware, Export |
 
 ## Instalasi
 
 ```bash
 # Clone & checkout branch Progres II
-git checkout cursor/phase-2-637a
+git checkout phase-2
 
 # Install Laravel + dependencies (jika belum ada project penuh)
 composer install
