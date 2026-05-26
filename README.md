@@ -6,7 +6,7 @@ Aplikasi website Laravel dengan dua aktor: **Admin** (CRUD penuh) dan **User** (
 
 | Progres | Branch | Isi |
 |---------|--------|-----|
-| I — View | `cursor/phase-1` | Blade templates, layout, UI |
+| I — View | `phase-1` | Blade templates, layout, UI |
 | II — Model & Controller | `phase-2` | Migration, Model, Controller, Middleware, Export |
 
 ## Instalasi
