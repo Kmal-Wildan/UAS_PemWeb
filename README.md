@@ -50,16 +50,18 @@ Pastikan output menunjukkan `PHP 8.4.x` dan extension `zip` aktif.
 
 ## Quick Start
 
-```bash
+```powershell
 git clone https://github.com/Kmal-Wildan/UAS_PEMWEB.git
 cd UAS_PEMWEB
 composer install
-cp .env.example .env          # Windows: copy .env.example .env
+copy .env.example .env
 php artisan key:generate
-touch database/database.sqlite  # Windows: New-Item database\database.sqlite -ItemType File -Force
+New-Item database\database.sqlite -ItemType File -Force
 php artisan migrate:fresh --seed
 php artisan serve
 ```
+
+> Linux/Mac: ganti `copy` dengan `cp .env.example .env`, dan `New-Item ...` dengan `touch database/database.sqlite`.
 
 Buka: http://127.0.0.1:8000
 
