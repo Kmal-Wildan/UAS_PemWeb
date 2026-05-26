@@ -16,6 +16,15 @@
         </div>
     </div>
     <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-info">
+            <div class="stat-icon"><i class="bi bi-tags"></i></div>
+            <div class="stat-info">
+                <p class="stat-label">Total Kategori</p>
+                <h3 class="stat-value">{{ number_format($stats['total_kategori']) }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
         <div class="stat-card stat-success">
             <div class="stat-icon"><i class="bi bi-stack"></i></div>
             <div class="stat-info">
@@ -28,17 +37,8 @@
         <div class="stat-card stat-warning">
             <div class="stat-icon"><i class="bi bi-currency-dollar"></i></div>
             <div class="stat-info">
-                <p class="stat-label">Total Nilai</p>
+                <p class="stat-label">Total Nilai Barang</p>
                 <h3 class="stat-value">Rp {{ number_format($stats['total_nilai'], 0, ',', '.') }}</h3>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3">
-        <div class="stat-card stat-info">
-            <div class="stat-icon"><i class="bi bi-people"></i></div>
-            <div class="stat-info">
-                <p class="stat-label">Total User</p>
-                <h3 class="stat-value">{{ number_format($stats['total_users']) }}</h3>
             </div>
         </div>
     </div>

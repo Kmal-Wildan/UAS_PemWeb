@@ -22,6 +22,8 @@
         Dicetak: {{ now()->format('d F Y H:i') }}
         @if($keyword) | Pencarian: {{ $keyword }} @endif
         @if($kategori) | Kategori: {{ $kategori }} @endif
+        @if($tanggal_dari) | Dari: {{ $tanggal_dari }} @endif
+        @if($tanggal_sampai) | Sampai: {{ $tanggal_sampai }} @endif
     </p>
 
     <table>
@@ -34,6 +36,7 @@
                 <th>Stok</th>
                 <th>Harga</th>
                 <th>Total Nilai</th>
+                <th>Tanggal</th>
             </tr>
         </thead>
         <tbody>
@@ -45,7 +48,8 @@
                     <td>{{ $barang->kategori }}</td>
                     <td class="text-right">{{ number_format($barang->stok, 0, ',', '.') }}</td>
                     <td class="text-right">{{ number_format($barang->harga, 0, ',', '.') }}</td>
-                    <td class="text-right">{{ number_format($barang->stok * $barang->harga, 0, ',', '.') }}</td>
+                    <td class="text-right">{{ number_format($barang->total_nilai, 0, ',', '.') }}</td>
+                    <td>{{ $barang->created_at->format('d/m/Y') }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -54,6 +58,7 @@
     <table class="summary">
         <tr>
             <td><strong>Total Barang:</strong> {{ $stats['total_barang'] }}</td>
+            <td><strong>Total Kategori:</strong> {{ $stats['total_kategori'] }}</td>
             <td><strong>Total Stok:</strong> {{ number_format($stats['total_stok'], 0, ',', '.') }}</td>
             <td><strong>Total Nilai:</strong> Rp {{ number_format($stats['total_nilai'], 0, ',', '.') }}</td>
         </tr>

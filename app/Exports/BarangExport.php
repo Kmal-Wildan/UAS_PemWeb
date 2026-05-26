@@ -15,17 +15,17 @@ class BarangExport implements FromCollection, WithHeadings, WithMapping, ShouldA
     public function __construct(
         protected ?string $keyword = null,
         protected ?string $kategori = null,
+        protected ?string $tanggalDari = null,
+        protected ?string $tanggalSampai = null,
     ) {}
 
     public function collection()
     {
-        $query = Barang::query()->search($this->keyword);
-
-        if ($this->kategori) {
-            $query->where('kategori', $this->kategori);
-        }
-
-        return $query->orderBy('kategori')->orderBy('nama_barang')->get();
+        return Barang::query()
+            ->filterLaporan($this->keyword, $this->kategori, $this->tanggalDari, $this->tanggalSampai)
+            ->orderBy('kategori')
+            ->orderBy('nama_barang')
+            ->get();
     }
 
     public function headings(): array
@@ -54,7 +54,7 @@ class BarangExport implements FromCollection, WithHeadings, WithMapping, ShouldA
             $barang->kategori,
             $barang->stok,
             $barang->harga,
-            $barang->stok * $barang->harga,
+            $barang->total_nilai,
             $barang->created_at->format('d/m/Y H:i'),
         ];
     }

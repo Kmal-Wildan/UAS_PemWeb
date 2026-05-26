@@ -10,32 +10,55 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
+    private function filters(Request $request): array
+    {
+        return [
+            'keyword' => $request->get('q'),
+            'kategori' => $request->get('kategori'),
+            'tanggal_dari' => $request->get('tanggal_dari'),
+            'tanggal_sampai' => $request->get('tanggal_sampai'),
+        ];
+    }
+
+    private function baseQuery(array $filters)
+    {
+        return Barang::query()->filterLaporan(
+            $filters['keyword'],
+            $filters['kategori'],
+            $filters['tanggal_dari'],
+            $filters['tanggal_sampai']
+        );
+    }
+
+    private function buildStats($query = null): array
+    {
+        $base = $query ?? Barang::query();
+
+        return [
+            'total_barang' => (clone $base)->count(),
+            'total_kategori' => (clone $base)->distinct('kategori')->count('kategori'),
+            'total_stok' => (int) (clone $base)->sum('stok'),
+            'total_nilai' => (float) ((clone $base)->selectRaw('SUM(stok * harga) as total')->value('total') ?? 0),
+        ];
+    }
+
     public function index(Request $request)
     {
-        $keyword = $request->get('q');
-        $kategori = $request->get('kategori');
+        $filters = $this->filters($request);
+        extract($filters);
 
-        $query = Barang::query()->search($keyword);
+        $query = $this->baseQuery($filters);
+        $barangs = (clone $query)->latest()->paginate(10)->withQueryString();
 
-        if ($kategori) {
-            $query->where('kategori', $kategori);
-        }
-
-        $barangs = $query->latest()->paginate(10)->withQueryString();
-
-        $stats = [
-            'total_barang' => Barang::count(),
-            'total_stok' => Barang::sum('stok'),
-            'total_nilai' => Barang::selectRaw('SUM(stok * harga) as total')->value('total') ?? 0,
-            'total_kategori' => Barang::distinct('kategori')->count('kategori'),
-        ];
+        $stats = $this->buildStats($query);
 
         $kategoriList = Barang::select('kategori')
             ->distinct()
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        $laporanPerKategori = Barang::selectRaw('kategori, COUNT(*) as jumlah, SUM(stok) as total_stok, SUM(stok * harga) as total_nilai')
+        $laporanPerKategori = (clone $query)
+            ->selectRaw('kategori, COUNT(*) as jumlah, SUM(stok) as total_stok, SUM(stok * harga) as total_nilai')
             ->groupBy('kategori')
             ->orderBy('kategori')
             ->get();
@@ -46,43 +69,48 @@ class LaporanController extends Controller
             'kategoriList',
             'laporanPerKategori',
             'keyword',
-            'kategori'
+            'kategori',
+            'tanggal_dari',
+            'tanggal_sampai'
         ));
     }
 
     public function exportPdf(Request $request)
     {
-        $keyword = $request->get('q');
-        $kategori = $request->get('kategori');
+        $filters = $this->filters($request);
+        extract($filters);
 
-        $query = Barang::query()->search($keyword);
+        $barangs = $this->baseQuery($filters)
+            ->orderBy('kategori')
+            ->orderBy('nama_barang')
+            ->get();
 
-        if ($kategori) {
-            $query->where('kategori', $kategori);
-        }
+        $stats = $this->buildStats($this->baseQuery($filters));
 
-        $barangs = $query->orderBy('kategori')->orderBy('nama_barang')->get();
+        $pdf = Pdf::loadView('exports.laporan-pdf', compact(
+            'barangs',
+            'stats',
+            'keyword',
+            'kategori',
+            'tanggal_dari',
+            'tanggal_sampai'
+        ))->setPaper('a4', 'landscape');
 
-        $stats = [
-            'total_barang' => $barangs->count(),
-            'total_stok' => $barangs->sum('stok'),
-            'total_nilai' => $barangs->sum(fn ($b) => $b->stok * $b->harga),
-        ];
-
-        $pdf = Pdf::loadView('exports.laporan-pdf', compact('barangs', 'stats', 'keyword', 'kategori'))
-            ->setPaper('a4', 'landscape');
-
-        return $pdf->download('laporan-barang-' . now()->format('Y-m-d-His') . '.pdf');
+        return $pdf->download('laporan-barang-'.now()->format('Y-m-d-His').'.pdf');
     }
 
     public function exportExcel(Request $request)
     {
-        $keyword = $request->get('q');
-        $kategori = $request->get('kategori');
+        $filters = $this->filters($request);
 
         return Excel::download(
-            new BarangExport($keyword, $kategori),
-            'laporan-barang-' . now()->format('Y-m-d-His') . '.xlsx'
+            new BarangExport(
+                $filters['keyword'],
+                $filters['kategori'],
+                $filters['tanggal_dari'],
+                $filters['tanggal_sampai']
+            ),
+            'laporan-barang-'.now()->format('Y-m-d-His').'.xlsx'
         );
     }
 }

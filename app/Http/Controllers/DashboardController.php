@@ -3,22 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-use App\Models\User;
 
 class DashboardController extends Controller
 {
+    private function buildStats(): array
+    {
+        return [
+            'total_barang' => Barang::count(),
+            'total_kategori' => Barang::distinct('kategori')->count('kategori'),
+            'total_stok' => (int) Barang::sum('stok'),
+            'total_nilai' => (float) (Barang::selectRaw('SUM(stok * harga) as total')->value('total') ?? 0),
+        ];
+    }
+
     public function admin()
     {
-        $stats = [
-            'total_barang' => Barang::count(),
-            'total_stok' => Barang::sum('stok'),
-            'total_nilai' => Barang::selectRaw('SUM(stok * harga) as total')->value('total') ?? 0,
-            'total_users' => User::where('role', 'user')->count(),
-        ];
-
+        $stats = $this->buildStats();
         $recentBarangs = Barang::latest()->take(5)->get();
 
-        $kategoriStats = Barang::selectRaw('kategori, COUNT(*) as jumlah, SUM(stok) as total_stok')
+        $kategoriStats = Barang::selectRaw('kategori, COUNT(*) as jumlah, SUM(stok) as total_stok, SUM(stok * harga) as total_nilai')
             ->groupBy('kategori')
             ->orderByDesc('jumlah')
             ->get();
@@ -28,12 +31,7 @@ class DashboardController extends Controller
 
     public function user()
     {
-        $stats = [
-            'total_barang' => Barang::count(),
-            'total_stok' => Barang::sum('stok'),
-            'total_kategori' => Barang::distinct('kategori')->count('kategori'),
-        ];
-
+        $stats = $this->buildStats();
         $recentBarangs = Barang::latest()->take(5)->get();
 
         return view('dashboard.user', compact('stats', 'recentBarangs'));

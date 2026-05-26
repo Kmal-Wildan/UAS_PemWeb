@@ -1,39 +1,31 @@
 # AGENTS.md
 
-## Cursor Cloud specific instructions
+## Repository state
 
-### Repository state
+Branch **`phase-3-demo-ready`** — project Laravel lengkap siap demo presentasi.
 
-- **Progres I** (`cursor/phase-1-637a`): Blade views, layout, CSS/JS
-- **Progres II** (`cursor/phase-2-637a`): Migration, Model, Controller, Middleware, Seeder, Export PDF/Excel
-
-### Setup lokal
+## Setup
 
 ```bash
 composer install
 cp .env.example .env
 php artisan key:generate
 touch database/database.sqlite
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-### Demo login
+## Demo accounts
 
-- Admin: `admin@example.com` / `password`
-- User: `user@example.com` / `password`
+- Admin: `admin@gmail.com` / `password123`
+- User: `user@gmail.com` / `password123`
 
-### Available system tools
+## Demo guide
 
-- **Node.js**: v22 (via nvm)
-- **npm**: v10
-- **Python**: 3.12
-- **Git**: 2.43
-- **PHP/Composer**: Install lokal (tidak tersedia di cloud VM)
+Lihat **[DEMO.md](DEMO.md)** untuk checklist, urutan presentasi, dan troubleshooting.
 
-### Middleware
+## Available tools (cloud VM)
 
-- `auth` — wajib login
-- `role:admin` — hanya admin
-- `role:user` — hanya user
-- `role:admin,user` — admin dan user (read access)
+- PHP 8.3, Composer
+- Node.js v22, npm v10
+- Python 3.12, Git 2.43
