@@ -9,7 +9,7 @@ Panduan presentasi lengkap: **[DEMO.md](DEMO.md)**
 ## Quick Start
 
 ```bash
-git checkout phase-3-demo-ready
+git checkout main
 composer install
 cp .env.example .env
 php artisan key:generate
