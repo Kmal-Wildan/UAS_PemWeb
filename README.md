@@ -2,7 +2,7 @@
 
 Aplikasi Laravel dengan dua role **Admin** (CRUD penuh) dan **User** (read-only).
 
-**Branch demo-ready:** `phase-3-demo-ready`
+**Branch utama:** `main` (demo-ready)
 
 Panduan presentasi lengkap: **[DEMO.md](DEMO.md)**
 
@@ -51,7 +51,8 @@ Pastikan output menunjukkan `PHP 8.4.x` dan extension `zip` aktif.
 ## Quick Start
 
 ```powershell
-git checkout phase-3-demo-ready
+git clone https://github.com/Kmal-Wildan/UAS_PEMWEB.git
+cd UAS_PEMWEB
 composer install
 copy .env.example .env
 php artisan key:generate
@@ -89,7 +90,7 @@ Buka: http://127.0.0.1:8000
 |--------|-------|
 | `phase-1` | View (Blade) |
 | `phase-2` | Model & Controller |
-| `phase-3-demo-ready` | Demo-ready + dokumentasi presentasi |
+| `main` | Demo-ready + dokumentasi presentasi |
 
 ## Tech Stack
 

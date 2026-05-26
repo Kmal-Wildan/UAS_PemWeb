@@ -2,7 +2,23 @@
 
 ## Repository state
 
-Branch **`phase-3-demo-ready`** — project Laravel lengkap siap demo presentasi.
+Branch **`main`** — project Laravel lengkap siap demo presentasi.
+
+## PHP requirement
+
+**Use PHP 8.4.x** for local development and demo.
+
+- Recommended: PHP **8.4**
+- Also works: PHP 8.2, 8.3
+- **Not supported:** PHP 8.5+ (locked `phpoffice/phpspreadsheet` requires `<8.5.0`)
+
+Required extensions: `zip`, `mbstring`, `openssl`, `pdo_sqlite`, `fileinfo`, `curl`, `gd`
+
+Verify before setup:
+```bash
+php -v    # should show 8.4.x
+php -m    # should include zip
+```
 
 ## PHP requirement
 
@@ -23,6 +39,8 @@ php -m    # should include zip
 ## Setup
 
 ```bash
+git clone https://github.com/Kmal-Wildan/UAS_PEMWEB.git
+cd UAS_PEMWEB
 composer install
 cp .env.example .env
 php artisan key:generate
